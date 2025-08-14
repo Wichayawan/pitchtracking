@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 export default function Part() {
   return (
     <div className="min-h-screen bg-[#E8EEF4]">
-      <Header title="จัดการพาร์ท" />
+      <Header title="" />
       <div className="flex">
         <Sidebar current="parts" />
         <main className="flex-1 p-6">
