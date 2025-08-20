@@ -70,7 +70,7 @@ export default function Station() {
 
   return (
     <div className="min-h-screen bg-[#E8EEF4]">
-      <Header title="จัดการสเตชัน" />
+      <Header title="" />
       <div className="flex">
         <Sidebar current="stations" />
         <main className="flex-1 p-6">
@@ -86,7 +86,7 @@ export default function Station() {
               className="w-full max-w-md px-4 py-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#00ABD0]"
             />
             <button onClick={()=>setOpenAdd(true)} className="inline-flex items-center gap-2 bg-[#21B573] hover:bg-[#1ca565] text-white px-4 py-2 rounded-md shadow">
-              ＋ เพิ่มแรค
+              ＋ เพิ่มสเตชัน
             </button>
           </section>
 

@@ -1,32 +1,36 @@
 import React, { useMemo, useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import InfoCards from "../components/InfoCards";
-import DataTable from "../components/DataTable";
+import InfoCards from "../components/InfoCards"; // การ์ดแสดงข้อมูลรวม
+import DataTable from "../components/DataTable"; // ตารางแสดงรายการ
 import AddItemModal from "../components/AddItemModal";
 
+// ข้อมูลตัวอย่าง
 const seed = [
   { id:1, code:"YQ15406358", status:"pending",   start:"1 ชม. 30 นาที", stop:"1 ชม. 30 นาที", total:"1 ชม. 30 นาที", owner:"wichayawan" },
   { id:2, code:"YN15436533", status:"completed", start:"1 ชม. 20 นาที", stop:"1 ชม. 20 นาที", total:"1 ชม. 20 นาที", owner:"wichayawan" },
-  { id:3, code:"LPI2400126", status:"pending",   start:"1 ชม. 20 นาที", stop:"1 ชม. 20 นาที", total:"1 ชม. 20 นาที", owner:"wichayawan" },
+  { id:3, code:"LPI2400126", status:"In Progress",   start:"1 ชม. 20 นาที", stop:"1 ชม. 20 นาที", total:"1 ชม. 20 นาที", owner:"wichayawan" },
 ];
 
 export default function Part() {
-  const [list, setList] = useState(seed);
-  const [q, setQ] = useState("");
-  const [page, setPage] = useState(1);
-  const [openAdd, setOpenAdd] = useState(false);
-  const pageSize = 7;
+  const [list, setList] = useState(seed); // state เก็บรายการพาร์ท
+  const [q, setQ] = useState(""); // state คำค้นหา
+  const [page, setPage] = useState(1); // state หน้าปัจจุบัน
+  const [openAdd, setOpenAdd] = useState(false); // state เปิด/ปิด modal เพิ่มพาร์ท
+  const pageSize = 7; // จำนวนข้อมูลต่อหน้า
 
+  // การ์ดข้อมูลรวมด้านบน
   const cards = [
     { icon: "🚚", label: "ผลิต ณ ตอนนี้", value: 8 },
     { icon: "🏁", label: "เป้าหมายวันนี้", value: "12/20" },
     { icon: "📅", label: "พาร์ททั้งหมด/เดือน", value: "119/165" },
   ];
 
+  // คอนฟิกคอลัมน์ของตาราง
   const columns = [
     { key:"code",   header:"รหัสพาร์ท", className:"font-medium text-slate-700" },
     { key:"status", header:"สถานะ", render:(r)=>(
+      // สถานะพร้อมสีพื้นหลัง
       <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
         r.status==="completed"?"bg-green-100 text-green-700":
         r.status==="ใช้งาน"?"bg-cyan-100 text-cyan-700":
@@ -39,6 +43,7 @@ export default function Part() {
     { key:"owner",  header:"ชื่อผู้เพิ่มพาร์ท" },
   ];
 
+  // กำหนด fields สำหรับฟอร์มใน modal เพิ่มพาร์ท
   const fields = [
     { name:"code", label:"รหัสพาร์ท", required:true, placeholder:"เช่น LC14-BJMOA", full:true },
     { name:"status", label:"สถานะ", type:"select", options:["pending","completed","ใช้งาน"] },
@@ -72,28 +77,43 @@ export default function Part() {
 
   return (
     <div className="min-h-screen bg-[#E8EEF4]">
-      <Header title="จัดการพาร์ท" />
+      <Header title="" />
       <div className="flex">
         <Sidebar current="parts" />
         <main className="flex-1 p-6">
-          <h1 className="text-2xl font-semibold text-slate-800">จัดการพาร์ท</h1>
+          <h1 className="text-2xl font-semibold text-[#B3B3B3]">จัดการพาร์ท</h1>
+          <h2 className="text-base text-[#13213C]/80 ">ภาพรวมของพาร์ท</h2>
 
           <InfoCards items={cards} />
 
-          <section className="mt-5 flex items-center justify-between gap-3">
-            <input
-              value={q}
-              onChange={(e)=>{setQ(e.target.value); setPage(1);}}
-              placeholder="เช่น รหัสพาร์ท"
-              className="w-full max-w-md px-4 py-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#00ABD0]"
-            />
-            <button onClick={()=>setOpenAdd(true)} className="inline-flex items-center gap-2 bg-[#21B573] hover:bg-[#1ca565] text-white px-4 py-2 rounded-md shadow">
-              ＋ เพิ่มพาร์ท
-            </button>
+          {/* แถวค้นหา + ปุ่มเพิ่มพาร์ท */}
+          <section className="mt-5 flex items-end justify-between gap-3">
+            <div className="w-full max-w-md">
+              <label className="block text-base text-[#13213C]/80 mb-1">
+                ค้นหา
+              </label>
+              <input
+                value={q}
+                onChange={(e)=>{setQ(e.target.value); setPage(1);}}
+                placeholder="เช่น รหัสพาร์ท"
+                className="w-full px-4 py-2 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#00ABD0]"
+              />
+            </div>
+            <button
+            onClick={()=>setOpenAdd(true)}
+            className="inline-flex items-center gap-2 bg-[#21B573] hover:bg-[#1ca565] text-white px-4 py-2 rounded-md shadow"
+          >
+            ＋ เพิ่มพาร์ท
+          </button>
           </section>
+          {/* หัวข้อของตาราง (อยู่นอก DataTable) */}
+        <div className="mt-6 mb-2 flex items-center justify-between">
+          <h3 className="text-base text-[#13213C]/80">
+            รายการพาร์ท
+          </h3>
+        </div>
 
           <DataTable
-            title="รายการพาร์ททั้งหมด"
             columns={columns}
             data={paged}
             page={page}

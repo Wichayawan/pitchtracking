@@ -69,7 +69,7 @@ export default function Rack() {
 
   return (
     <div className="min-h-screen bg-[#E8EEF4]">
-      <Header title="จัดการแรค" />
+      <Header title="" />
       <div className="flex">
         <Sidebar current="racks" />
         <main className="flex-1 p-6">
